@@ -36,7 +36,12 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 export default function Stats() {
   return (
     <section style={{ padding: '5rem 3rem', borderTop: '1px solid var(--line)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'var(--line)', borderRadius: 16, overflow: 'hidden' }}>
+      
+      {/* 1. Added className="stats-inner" here and removed the inline grid styles */}
+      <div 
+        className="stats-inner" 
+        style={{ gap: 1, background: 'var(--line)', borderRadius: 16, overflow: 'hidden' }}
+      >
         {stats.map((s, i) => (
           <div key={i} style={{ background: 'var(--bg2)', padding: '2.5rem 2rem', textAlign: 'center' }}>
             {'target' in s
@@ -47,7 +52,28 @@ export default function Stats() {
           </div>
         ))}
       </div>
-      <style>{`@media(max-width:768px){ .stats-inner { grid-template-columns: repeat(2,1fr) !important; } }`}</style>
+
+      {/* 2. Moved all grid logic into the style tag so it can be responsive */}
+      <style>{`
+        .stats-inner {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+        }
+        
+        /* Tablet: Shows 2 items per row */
+        @media(max-width: 1024px) {
+          .stats-inner { 
+            grid-template-columns: repeat(2, 1fr); 
+          } 
+        }
+        
+        /* Mobile: Shows 1 item per row (in a column) */
+        @media(max-width: 768px) { 
+          .stats-inner { 
+            grid-template-columns: repeat(1, 1fr); 
+          } 
+        }
+      `}</style>
     </section>
   );
 }
